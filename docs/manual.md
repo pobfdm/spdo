@@ -17,3 +17,37 @@ a few others to make the job faster.
 - **isSelect($sql)** 	returns TRUE if the query is a select, false otherwise.
 - **quote($sql)** 	returns a quoted string to be inserted into a query
 - **countRecordFromTable($table)**	returns the number of records in a table
+
+##Show the result of a select
+
+```
+include_once("lib/sPDO.php");
+ 
+$mydb = new sPDO();
+ 
+$mydb->connect();
+if ( !$mydb->execute("select * from users ")) echo "problemi nella query<br>";
+ 
+for ($i=1; $i<= $mydb->nrows(); $i++)
+{
+	echo $mydb->read($i, "user") ." - ". $mydb->read($i, "pass") . "<br>" ;
+}
+$mydb->disconnect();
+
+```
+##Insert a record in a table
+
+```
+
+
+include_once("lib/sPDO.php");
+ 
+$mydb = new sPDO();
+
+$mydb->connect();
+$sql="INSERT INTO  `users` ( `user` ,`pass` , `type` ) VALUES ( 'utente' , '365816905f5e9c148e20273719fe163d' , 1 );" ;
+if ( !$mydb->execute($sql)) echo "problemi nella insert <br>";
+$mydb->disconnect();
+
+
+```
