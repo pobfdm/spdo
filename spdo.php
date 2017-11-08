@@ -25,9 +25,9 @@
 class sPDO
 {
 //--Edit to fit your needs
-var $DSN =  'mysql:host=localhost;dbname=miodb' ;    
-var $DBUSER = 'root';
-var $DBPASS = 'mypassword';
+var $DSN =  'pgsql:host=localhost;dbname=test0' ;    
+var $DBUSER = 'postgres';
+var $DBPASS = 'postgres';
 //---------------------------------
  
  
@@ -87,10 +87,21 @@ function quote($sql)
  
 function isSelect($sql)
 {
-	$a=trim($sql);
-	$a=split(" ",$a);
+	$a=explode(" ",$sql);
 	$res = FALSE;
-	if (strcasecmp($a[0], "select")==0 ) $res = TRUE;
+	for($i=0; $i<=count($a); $i++)
+	{
+		if(!empty($a[$i]))
+		{
+			if (strcasecmp($a[$i], "select")==0 )
+			{
+				 $res = TRUE;
+				 continue;
+			} 
+		}
+	}
+	
+	//if (strcasecmp($a[0], "select")==0 ) $res = TRUE;
 	return $res;
 }
  
@@ -119,7 +130,8 @@ function lastInsertId()
  
 function GetDriverName()
 {
-	 $res=split(":", $this->DSN, 2);
+	 //$res=split(":", $this->DSN, 2);
+	 $res=explode(":",$this->DSN,2);
 	 return $res[0];
 }
  
