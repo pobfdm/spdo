@@ -1,12 +1,12 @@
-#The sPDO manual
+# The sPDO manual
 
-Spdo is a simple Php class that allows the development PDO in a simple and 
+Spdo is a simple Php class that allows the development PDO in a simple and
 fast.The class in question does not tend to hide the methods and the PDO
 driver functions (called up using the same public facilities) rather adds
 a few others to make the job faster.
 
-##Methods
-- **connect()** 	connects to the db 
+## Methods
+- **connect()** 	connects to the db
 - **disconnect()** 	disconnects from db
 - **execute($sql)** run a query
 - **nrows()** 		returns the number of records of a select
@@ -18,18 +18,18 @@ a few others to make the job faster.
 - **quote($sql)** 	returns a quoted string to be inserted into a query
 - **countRecordFromTable($table)**	returns the number of records in a table
 
-##Show the result of a select
+## Show the result of a select
 
 ```
 <?php
 
 include_once("lib/sPDO.php");
- 
+
 $mydb = new sPDO();
- 
+
 $mydb->connect();
 if ( !$mydb->execute("select * from users ")) echo "problemi nella query<br>";
- 
+
 for ($i=1; $i<= $mydb->nrows(); $i++)
 {
 	echo $mydb->read($i, "user") ." - ". $mydb->read($i, "pass") . "<br>" ;
@@ -38,13 +38,13 @@ $mydb->disconnect();
 ?>
 
 ```
-##Insert a record in a table
+## Insert a record in a table
 
 ```
 <?php
 
 include_once("lib/sPDO.php");
- 
+
 $mydb = new sPDO();
 
 $mydb->connect();
@@ -55,15 +55,15 @@ $mydb->disconnect();
 ?>
 ```
 
-##Delete a record
+## Delete a record
 
 ```
 <?php
 
 include_once("lib/sPDO.php");
- 
+
 $mydb = new sPDO();
- 
+
 
 $mydb->connect();
 $sql="DELETE  from `users` WHERE  `id` >3;" ;
@@ -73,18 +73,18 @@ $mydb->disconnect();
 ?>
 ```
 
-##Edit a record
+## Edit a record
 
 ```
 <?php
 
 include_once("lib/sPDO.php");
- 
+
 $mydb = new sPDO();
 
 $mydb->connect();
 $sql="UPDATE  `users` SET  `user` =  'test0',
-						   `pass` =  '098f6bcd4621d373cade4e832627b4f6' 
+						   `pass` =  '098f6bcd4621d373cade4e832627b4f6'
 				WHERE  `id` =3;";
 if ( !$mydb->execute($sql)) echo "problemi nella update <br>";
 $mydb->disconnect();
@@ -93,43 +93,43 @@ $mydb->disconnect();
 ```
 
 
-##Direct use of PDO
+## Direct use of PDO
 
 ```
 <?php
 
 $db = new sPDO();
 $db->connect();
- 
+
 $sql =  " UPDATE itcms_pages set
-		title = :title, 
+		title = :title,
 		body =  :body,
 		menu =  :menu,				
 		menuorder = :menuorder				
 		where id = :id " ; 											
- 
+
 		$db->stmt = $db->dbh->prepare($sql);
 		$db->stmt->bindParam(":title", $_POST["title"]);
 		$db->stmt->bindParam(":body", $_POST["body"]);
 		$db->stmt->bindParam(":menu", $menu);
 		$db->stmt->bindParam(":menuorder", $_POST["menuorder"]);
 		$db->stmt->bindParam(":id", $_POST["id"]);
- 
+
 if (!$db->stmt->execute()) echo 'Errore nella query: '. $sql;
- 
+
 $db->disconnect();
 
 ?>
 ```
 
-##Some practical examples of use with sqlite
+## Some practical examples of use with sqlite
 
-###Create a table
+### Create a table
 
 ```
 
 
-<?php 
+<?php
 	$mydb= new sPDO();
 	$mydb->DSN =  'sqlite:db.sqlite' ;
 	$mydb->connect();
@@ -139,7 +139,7 @@ $db->disconnect();
 						  "nome" varchar(256) ,
 						  "tel" varchar(256) ,
 						  "email" varchar(256) ,
-						  PRIMARY KEY ("id") 
+						  PRIMARY KEY ("id")
 						);' ;
 	if (!$mydb->execute($sql)) echo 'Problemi nella query';
 	$mydb->disconnect();					
@@ -148,16 +148,16 @@ $db->disconnect();
 
 ```
 
-###Select
+### Select
 
 ```
-<?php 
+<?php
 	$mydb= new sPDO();
 	$mydb->DSN =  'sqlite:db.sqlite' ;
 	$mydb->connect();
 	$sql='Select * from persone;' ;
 	if (!$mydb->execute($sql)) echo 'Problemi nella query';
- 
+
 	for ($i=1; $i<= $mydb->nrows(); $i++)
 	{
 		echo $mydb->read($i, "cognome") ." - ".
@@ -165,20 +165,20 @@ $db->disconnect();
 				$mydb->read($i, "tel")." - ".
 				$mydb->read($i, "email"). "<br>" ;
 	}
-	echo '<div style="margin-top:15px">Record totali nella tabella: '.$mydb->countRecordFromTable('persone').'</div>';	
+	echo '<div style="margin-top:15px">Record totali nella tabella: '.$mydb->countRecordFromTable('persone').'</div>';
 	$mydb->disconnect();
- 
+
 ?>
 
 
 ```
 
-###Insert
+### Insert
 
 ```
 
 
-<?php 
+<?php
 	$mydb= new sPDO();
 	$mydb->DSN =  'sqlite:db.sqlite' ;
 	$mydb->connect();
